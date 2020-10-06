@@ -4,10 +4,10 @@ exports.config = {
     specs: ['spec.js'],
     jasmineNodeOpts: {
       defaultTimeoutInterval: 2500000
-      },
+      }/* ,
     multiCapabilities: [{
         'browserName': 'firefox'
       }, {
         'browserName': 'chrome'
-      }]
+      }] */
   }
