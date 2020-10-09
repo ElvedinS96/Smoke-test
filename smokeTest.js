@@ -30,8 +30,9 @@
       browser.actions().mouseMove(element(by.className("product_img_link"))).click().perform();
 
       // Hover over images
+      browser.wait(EC.presenceOf($('#thumbnail_12')), 3000);
       browser.actions().mouseMove(element(by.id("thumbnail_12"))).click().perform();
-      browser.sleep(2500);
+      browser.sleep(3000);
       browser.driver.findElement(by.className("fancybox-item fancybox-close")).click();
       browser.actions().mouseMove(element(by.id("thumbnail_13"))).click().perform();
       browser.sleep(2500);

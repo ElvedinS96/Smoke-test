@@ -4,10 +4,5 @@ exports.config = {
     specs: ['smokeTest.js'],
     jasmineNodeOpts: {
       defaultTimeoutInterval: 2500000
-      },
-    multiCapabilities: [{
-        'browserName': 'firefox'
-      }, {
-        'browserName': 'chrome'
-      }]
+      }
   }
