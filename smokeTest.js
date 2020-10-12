@@ -6,74 +6,77 @@
     browser.get('http://automationpractice.com/index.php');
     var EC = protractor.ExpectedConditions;
 
-    it('001: User is able to sign in, search items, view item images, choose quantities and sizes, add it to cart, choose paying method and complete order', function() {
+    it('001: User is able to sign in, search and check for item details, add it to the cart, and complete order', async function() {
       // Click on "Sign in" link
-      browser.driver.findElement(by.className("login")).click();
+      
+      await browser.driver.findElement(by.className("login")).click();
       browser.wait(EC.presenceOf($('#email')), 5000);
 
       // Enter email in "Email address" field, which is located in "Already registered?" form
-      browser.driver.findElement(by.id("email")).sendKeys("gigedov@getnada.com");
+      await browser.driver.findElement(by.id("email")).sendKeys("gigedov@getnada.com");
 
       // Enter password in "Password" field, which is located in "Already registered?" form
-      browser.driver.findElement(by.id("passwd")).sendKeys("testing1");
+      await browser.driver.findElement(by.id("passwd")).sendKeys("testing1");
 
       // Click on "Sign in" button, which is located in "Already registered?" form
-      browser.driver.findElement(by.id("SubmitLogin")).click();
+      await browser.driver.findElement(by.id("SubmitLogin")).click();
       
       // Enter data in search bar
-      browser.driver.findElement(by.id("search_query_top")).sendKeys("printed summer dress");
+      await browser.driver.findElement(by.id("search_query_top")).sendKeys("printed summer dress");
 
       // Click on search icon
-      browser.driver.findElement(by.className("btn btn-default button-search")).click();
+      await browser.driver.findElement(by.className("btn btn-default button-search")).click();
 
       // Hover over the first showed item
-      browser.actions().mouseMove(element(by.className("product_img_link"))).click().perform();
+      await browser.actions().mouseMove(element(by.xpath("//*[@id='center_column']/ul/li[1]/div/div[2]/h5/a"))).click().perform();
 
       // Hover over images
       browser.wait(EC.presenceOf($('#thumbnail_12')), 3000);
-      browser.actions().mouseMove(element(by.id("thumbnail_12"))).click().perform();
-      browser.sleep(3000);
-      browser.driver.findElement(by.className("fancybox-item fancybox-close")).click();
-      browser.actions().mouseMove(element(by.id("thumbnail_13"))).click().perform();
-      browser.sleep(2500);
-      browser.driver.findElement(by.className("fancybox-item fancybox-close")).click();
+      await browser.actions().mouseMove(element(by.id("thumbnail_12"))).click().perform();
+      browser.wait(EC.visibilityOf($('.fancybox-image')), 3000);
+      await browser.driver.findElement(by.id("product")).sendKeys(protractor.Key.ESCAPE);
+      browser.wait(EC.presenceOf($('#thumbnail_13')), 3000);
+      await browser.actions().mouseMove(element(by.id("thumbnail_13"))).click().perform();
+      browser.wait(EC.visibilityOf($('.fancybox-image')), 3000);
+      await browser.driver.findElement(by.id("product")).sendKeys(protractor.Key.ESCAPE);
+    
 
       // Add quantity
-      browser.driver.findElement(by.id("quantity_wanted")).sendKeys(protractor.Key.BACK_SPACE);
-      browser.driver.findElement(by.id("quantity_wanted")).sendKeys(6);
+      await browser.driver.findElement(by.id("quantity_wanted")).sendKeys(protractor.Key.BACK_SPACE);
+      await browser.driver.findElement(by.id("quantity_wanted")).sendKeys(6);
 
       // Add size
-      browser.driver.findElement(by.id("group_1")).click();
-      browser.driver.findElement(by.css("#group_1 [value='2']")).click();
+      await browser.driver.findElement(by.id("group_1")).click();
+      await browser.driver.findElement(by.css("#group_1 [value='2']")).click();
       
       // Add item to the cart
-      browser.driver.findElement(by.xpath("//*[@id='add_to_cart']/button")).click();
-      browser.manage().timeouts().implicitlyWait(5000);    
+      await browser.driver.findElement(by.xpath("//*[@id='add_to_cart']/button")).click();
+      await browser.manage().timeouts().implicitlyWait(5000);    
       
        // Proceed to checkout
-      browser.driver.findElement(by.xpath("//*[@id='layer_cart']/div[1]/div[2]/div[4]/a")).click();
+       await browser.driver.findElement(by.xpath("//*[@id='layer_cart']/div[1]/div[2]/div[4]/a")).click();
       
       // 01. Summary form opened && Click on proceed button
-      browser.driver.findElement(by.className("button btn btn-default standard-checkout button-medium")).click();
+      await browser.driver.findElement(by.className("button btn btn-default standard-checkout button-medium")).click();
 
       // 03. Address form opened && Click on proceed button
-      browser.driver.findElement(by.xpath("//*[@id='center_column']/form/p/button")).click();
+      await browser.driver.findElement(by.xpath("//*[@id='center_column']/form/p/button")).click();
 
       // 04. Shipping form opened &&  click on "Agree to the terms of service" && Click on proceed button
-      browser.driver.findElement(by.xpath("//*[@id='form']/div/p[2]/label")).click();
-      browser.driver.findElement(by.className("button btn btn-default standard-checkout button-medium")).click();
+      await browser.driver.findElement(by.xpath("//*[@id='form']/div/p[2]/label")).click();
+      await browser.driver.findElement(by.className("button btn btn-default standard-checkout button-medium")).click();
       
       // 05. Payment form opened && Click on "Pay by bank wire"
-      browser.driver.findElement(by.className("bankwire")).click();
+      await browser.driver.findElement(by.className("bankwire")).click();
 
       // 05. Payment form opened && Click on "I confirm my order" button
-      browser.driver.findElement(by.xpath("//*[@id='cart_navigation']/button")).click(); 
+      await browser.driver.findElement(by.xpath("//*[@id='cart_navigation']/button")).click(); 
       browser.wait(EC.presenceOf($('.page-heading')), 7000);
 
       // Test assertion #1
       expect(element(by.className("page-heading")).getText()).toEqual("ORDER CONFIRMATION");
 
-      browser.driver.findElement(by.className("logout")).click();
+      await browser.driver.findElement(by.className("logout")).click();
       browser.wait(EC.presenceOf($('.page-heading')), 5000);
 
       // Test assertion #2
