@@ -7,22 +7,27 @@
     var EC = protractor.ExpectedConditions;
 
     it('001: User is able to sign in, search and check for item details, add it to the cart, and complete order', async function() {
-      // Click on "Sign in" link
+      let loginEmail= "gigedov@getnada.com";
+      let loginPassword = "testing1";
+      let dataToEnterInSearchBar = "printed summer dress";
+      let escapeKey = protractor.Key.ESCAPE;
+      let backspaceKey = protractor.Key.BACK_SPACE;
       
+      // Click on "Sign in" link
       await browser.driver.findElement(by.className("login")).click();
-      browser.wait(EC.presenceOf($('#email')), 5000);
+      await browser.wait(EC.presenceOf($('#email')), 5000);
 
       // Enter email in "Email address" field, which is located in "Already registered?" form
-      await browser.driver.findElement(by.id("email")).sendKeys("gigedov@getnada.com");
+      await browser.driver.findElement(by.id("email")).sendKeys(loginEmail);
 
       // Enter password in "Password" field, which is located in "Already registered?" form
-      await browser.driver.findElement(by.id("passwd")).sendKeys("testing1");
+      await browser.driver.findElement(by.id("passwd")).sendKeys(loginPassword);
 
       // Click on "Sign in" button, which is located in "Already registered?" form
       await browser.driver.findElement(by.id("SubmitLogin")).click();
       
       // Enter data in search bar
-      await browser.driver.findElement(by.id("search_query_top")).sendKeys("printed summer dress");
+      await browser.driver.findElement(by.id("search_query_top")).sendKeys(dataToEnterInSearchBar);
 
       // Click on search icon
       await browser.driver.findElement(by.className("btn btn-default button-search")).click();
@@ -31,18 +36,18 @@
       await browser.actions().mouseMove(element(by.xpath("//*[@id='center_column']/ul/li[1]/div/div[2]/h5/a"))).click().perform();
 
       // Hover over images
-      browser.wait(EC.presenceOf($('#thumbnail_12')), 3000);
+      await browser.wait(EC.presenceOf($('#thumbnail_12')), 3000);
       await browser.actions().mouseMove(element(by.id("thumbnail_12"))).click().perform();
-      browser.wait(EC.visibilityOf($('.fancybox-image')), 3000);
-      await browser.driver.findElement(by.id("product")).sendKeys(protractor.Key.ESCAPE);
-      browser.wait(EC.presenceOf($('#thumbnail_13')), 3000);
+      await browser.wait(EC.visibilityOf($('.fancybox-image')), 3000);
+      await browser.driver.findElement(by.id("product")).sendKeys(escapeKey);
+      await browser.wait(EC.presenceOf($('#thumbnail_13')), 3000);
       await browser.actions().mouseMove(element(by.id("thumbnail_13"))).click().perform();
-      browser.wait(EC.visibilityOf($('.fancybox-image')), 3000);
-      await browser.driver.findElement(by.id("product")).sendKeys(protractor.Key.ESCAPE);
+      await browser.wait(EC.visibilityOf($('.fancybox-image')), 3000);
+      await browser.driver.findElement(by.id("product")).sendKeys(escapeKey);
     
 
       // Add quantity
-      await browser.driver.findElement(by.id("quantity_wanted")).sendKeys(protractor.Key.BACK_SPACE);
+      await browser.driver.findElement(by.id("quantity_wanted")).sendKeys(backspaceKey);
       await browser.driver.findElement(by.id("quantity_wanted")).sendKeys(6);
 
       // Add size
@@ -51,7 +56,8 @@
       
       // Add item to the cart
       await browser.driver.findElement(by.xpath("//*[@id='add_to_cart']/button")).click();
-      browser.manage().timeouts().implicitlyWait(5000);    
+      await browser.manage().timeouts().implicitlyWait(5000);    
+
       
       // Proceed to checkout
       await browser.driver.findElement(by.xpath("//*[@id='layer_cart']/div[1]/div[2]/div[4]/a")).click();
@@ -71,13 +77,13 @@
 
       // 05. Payment form opened && Click on "I confirm my order" button
       await browser.driver.findElement(by.xpath("//*[@id='cart_navigation']/button")).click(); 
-      browser.wait(EC.presenceOf($('.page-heading')), 7000);
+      await browser.wait(EC.presenceOf($('.page-heading')), 7000);
 
       // Test assertion #1
       expect(element(by.className("page-heading")).getText()).toEqual("ORDER CONFIRMATION");
 
       await browser.driver.findElement(by.className("logout")).click();
-      browser.wait(EC.presenceOf($('.page-heading')), 5000);
+      await browser.wait(EC.presenceOf($('.page-heading')), 5000);
 
       // Test assertion #2
       expect(element(by.className("page-heading")).getText()).toEqual("AUTHENTICATION"); 
