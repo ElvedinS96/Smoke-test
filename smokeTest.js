@@ -51,10 +51,10 @@
       
       // Add item to the cart
       await browser.driver.findElement(by.xpath("//*[@id='add_to_cart']/button")).click();
-      await browser.manage().timeouts().implicitlyWait(5000);    
+      browser.manage().timeouts().implicitlyWait(5000);    
       
-       // Proceed to checkout
-       await browser.driver.findElement(by.xpath("//*[@id='layer_cart']/div[1]/div[2]/div[4]/a")).click();
+      // Proceed to checkout
+      await browser.driver.findElement(by.xpath("//*[@id='layer_cart']/div[1]/div[2]/div[4]/a")).click();
       
       // 01. Summary form opened && Click on proceed button
       await browser.driver.findElement(by.className("button btn btn-default standard-checkout button-medium")).click();
